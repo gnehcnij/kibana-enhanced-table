@@ -92,7 +92,11 @@ export async function enhancedTableRequestHandler ({
 
   // enrich columns: aggConfig
   response.columns.forEach( column => {
-    column.aggConfig = aggs.byId(column.meta.sourceParams.id.split('.')[0]);
+    let aggConfig = aggs.byId(column.meta.sourceParams.id.split('.')[0]);
+    if (!aggConfig) {
+      aggConfig = aggs.byId(column.meta.sourceParams.id.split('[')[0]);
+    }
+    column.aggConfig = aggConfig;
   });
 
   // enrich response: hits
